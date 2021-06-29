@@ -1,0 +1,25 @@
+{
+  "name": "oop-profile-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlinjshaw/oop-profile-generator-cshaw.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carlinjshaw/oop-profile-generator-cshaw/issues"
+  },
+  "homepage": "https://github.com/carlinjshaw/oop-profile-generator-cshaw#readme",
+  "dependencies": {
+    "inquirer": "^8.1.1"
+  }
+}
