@@ -45,6 +45,10 @@ inquirer
     //call the engineer, intern or End functions on the condition that they were selected in the teamChoice question
     if (data[2].teamChoice === "Engineer"){
          addEngineer(data)
+    } else if (data[2].teamChoice === "Intern"){
+         addIntern(data)
+    } else if (data[2].teamChoice === "Finish building team"){
+          finish(data)
     }
         
     //followed by employee entry question
@@ -100,8 +104,17 @@ addEngineer = (data) => {
 
 for(var i=0; i<data[0].length; i++) {
    if (data[0][i].teamChoice == "Engineer"){
-     console.log("engineer was chosen to add")
+    data[0][i].teamChoice = ""
+    addEngineer(data);
    }
+   if (data[0][i].teamChoice == "Intern"){
+    data[0][i].teamChoice = ""
+    addIntern(data);
+  }
+  if (data[0][i].teamChoice == "Finish building team"){
+    data[0][i].teamChoice = ""
+    finish(data);
+  }
 }
 
       // if (data[0][0].teamChoice === "Engineer") {
@@ -158,16 +171,21 @@ addIntern = (data) => {
     data[1].push(answers);
     // console.log(data);
 
-    if (data[1][0].teamChoice === "Engineer") {
-      data[1][0].teamChoice = ""
-      addEngineer(data);
-    } else if (data[1][0].teamChoice === "Intern") {
-      data[1][0].teamChoice = ""
-      addIntern(data);
-    } else if (data[1][0].teamChoice === "Finish building team") {
-      data[1][0].teamChoice = ""
-      finish(data);
-    } 
+    for(var i=0; i<data[1].length; i++) {
+
+      if (data[1][i].teamChoice == "Engineer"){
+       data[1][i].teamChoice = ""
+       addEngineer(data);
+      }
+      if (data[1][i].teamChoice == "Intern"){
+       data[1][i].teamChoice = ""
+       addIntern(data);
+     }
+     if (data[1][i].teamChoice == "Finish building team"){
+       data[1][i].teamChoice = ""
+       finish(data);
+     }
+   }
 
   })
 }
