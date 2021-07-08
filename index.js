@@ -1,6 +1,12 @@
 const inquirer = require('inquirer');
-//idk if this works
-// const template = require('html-template.js')
+const fs = require('fs')
+
+const template = require('./html-template.js');
+// import all children classes
+const Manager = require('./lib/Manager.js')
+const Engineer = require('./lib/Engineer.js')
+const Intern = require('./lib/Intern')
+
 data = [ [], [] ]
 
 initial = () => {
@@ -12,22 +18,22 @@ inquirer
     {
       type: "input",
       message: "What is your team managers name?",
-      name: "manager-name",
+      name: "managerName",
     },
     {
       type: "number",
       message: "What is your team managers employee ID?",
-      name: "manager-id",
+      name: "managerId",
     },
     {
       type: "input",
       message: "What is your team manager's email address?",
-      name: "manager-email",
+      name: "managerEmail",
     },
     {
       type: "number",
       message: "What is your team manager's office number?",
-      name: "manager-office",
+      name: "managerOffice",
     },
     //teamChoice question- about employee entry, or finish team
     {
@@ -38,15 +44,18 @@ inquirer
     }
   ])
   .then((answers) => {
-    data.push(answers)
+
+    const newManager = new Manager(answers.managerName,answers.managerId, answers.managerEmail, answers.managerOffice);
+
+    data.push(newManager)
     console.log(data)
      
     //call the engineer, intern or End functions on the condition that they were selected in the teamChoice question
-    if (data[2].teamChoice === "Engineer"){
+    if (answers.teamChoice === "Engineer"){
          addEngineer(data)
-    } else if (data[2].teamChoice === "Intern"){
+    } else if (answers.teamChoice === "Intern"){
          addIntern(data)
-    } else if (data[2].teamChoice === "Finish building team"){
+    } else if (answers.teamChoice === "Finish building team"){
           finish(data)
     }
         
@@ -98,20 +107,22 @@ addEngineer = (data) => {
       },
     ])
     .then((answers) => {
-      data[0].push(answers);
+
+      const newEngineer = new Engineer (answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub)
+      data[0].push(newEngineer);
       console.log(data);
 
 for(var i=0; i<data[0].length; i++) {
-   if (data[0][i].teamChoice == "Engineer"){
-    data[0][i].teamChoice = ""
+   if (answers.teamChoice === "Engineer"){
+    answers.teamChoice = ""
     addEngineer(data);
    }
-   if (data[0][i].teamChoice == "Intern"){
-    data[0][i].teamChoice = ""
+   if (answers.teamChoice === "Intern"){
+    answers.teamChoice = ""
     addIntern(data);
   }
-  if (data[0][i].teamChoice == "Finish building team"){
-    data[0][i].teamChoice = ""
+  if (answers.teamChoice === "Finish building team"){
+    answers.teamChoice = ""
     finish(data);
   }
 }
@@ -167,21 +178,24 @@ addIntern = (data) => {
     }
   ])
   .then((answers) => {
-    data[1].push(answers);
-    // console.log(data);
+
+    const newIntern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool)
+
+    data[1].push(newIntern);
+    console.log(data);
 
     for(var i=0; i<data[1].length; i++) {
 
-      if (data[1][i].teamChoice == "Engineer"){
-       data[1][i].teamChoice = ""
+      if (answers.teamChoice == "Engineer"){
+       answers.teamChoice = ""
        addEngineer(data);
       }
-      if (data[1][i].teamChoice == "Intern"){
-       data[1][i].teamChoice = ""
+      if (answers.teamChoice == "Intern"){
+       answers.teamChoice = ""
        addIntern(data);
      }
-     if (data[1][i].teamChoice == "Finish building team"){
-       data[1][i].teamChoice = ""
+     if (answers.teamChoice == "Finish building team"){
+       answers.teamChoice = ""
        finish(data);
      }
    }
@@ -191,7 +205,11 @@ addIntern = (data) => {
 
 
 finish = (data) => {
+template(data)
+  // console.log(template(data))
   
-  console.log(data)
-  console.log("The script has finished!")
+  fs.writeFile("team.html", template(data), (err) => {
+    if (err)
+    console.log(err)
+  })
 }
